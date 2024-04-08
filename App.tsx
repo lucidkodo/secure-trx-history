@@ -1,26 +1,47 @@
 import 'react-native-gesture-handler';
+import React, { ErrorInfo } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import MainStack from './navigation/MainStack';
-
+import { ErrorBoundary } from 'react-error-boundary';
+import { Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, createTheme } from '@rneui/themed';
 
+import MainStack from './navigation/MainStack';
+import Generic from './screens/Errors/Generic';
+import globalStyles, {
+  buttonTitle,
+  primaryBtn,
+  secondaryBtn,
+} from './screens/styles/global';
+
 const theme = createTheme({
-  lightColors: {
-    primary: '#004643',
-  },
-  darkColors: {
-    primary: '#000',
+  components: {
+    Button: (props) => {
+      return {
+        buttonStyle: {
+          ...(props.isPrimary ? primaryBtn : secondaryBtn),
+          width: 250,
+        },
+        radius: 20,
+        titleStyle: buttonTitle,
+      };
+    },
   },
 });
+
+function errorHandler(err: Error, info: ErrorInfo) {
+  console.error('Logging: ', err);
+}
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ThemeProvider theme={theme}>
-        <MainStack />
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <ErrorBoundary FallbackComponent={Generic} onError={errorHandler}>
+        <ThemeProvider theme={theme}>
+          <MainStack />
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }
