@@ -11,20 +11,60 @@ import { Text, Icon } from '@rneui/themed';
 import dayjs from 'dayjs';
 import { colors } from '../styles/global';
 import { getTransactions } from '../../apis/mockApi';
-import BankCard from './components/Card';
 import TransactionItem from './components/TransactionItem';
 import useRefresh from './hooks/useRefresh';
 import { TransactionDetails } from '../../models/Transaction';
 import { useErrorBoundary } from 'react-error-boundary';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ParamList } from '../../navigation/types';
+import { CreditCard, DebitCard } from '../../models/BankCard';
+import { generateCard } from '../../apis/helper';
+import { useAtom } from 'jotai';
+import { isAuthenticated } from '../../stores/user';
+import * as LocalAuth from 'expo-local-authentication';
+import BankCard from './components/Card';
 
 export default function Dashboard({ navigation }: StackScreenProps<ParamList>) {
   const { showBoundary } = useErrorBoundary();
   const { refreshing, onRefresh, newTransactions } = useRefresh();
+  const [displayInfo, setDisplayInfo] = useAtom(isAuthenticated);
+  const [card, setCard] = useState<Partial<CreditCard | DebitCard>>({
+    number: '',
+    cvv: '',
+    expiry: '',
+  });
   const [trxs, setTrxs] = useState<TransactionDetails[]>([]);
 
+  const cardDetails = () => {
+    if (displayInfo) {
+      return card;
+    }
+
+    return {
+      number: card.number!.replace(/[0-9]/g, 'X'),
+      cvv: card.cvv!.replace(/[0-9]/g, 'X'),
+      expiry: card.expiry!.replace(/[0-9]/g, 'X'),
+    };
+  };
+
+  const cardPressHandler = async () => {
+    if (displayInfo) {
+      return;
+    }
+
+    try {
+      const result = await LocalAuth.authenticateAsync();
+      if (result.success) {
+        setDisplayInfo(true);
+      }
+    } catch (error: unknown) {
+      showBoundary(error);
+    }
+  };
+
   const logout = () => {
+    setDisplayInfo(false);
+
     navigation.reset({
       index: 0,
       routes: [{ name: 'Login' }],
@@ -36,15 +76,18 @@ export default function Dashboard({ navigation }: StackScreenProps<ParamList>) {
   };
 
   useEffect(() => {
-    async function loadTransactions() {
+    async function loadData() {
       try {
+        const newCard = await generateCard();
+        setCard(newCard);
+
         const transactions = await getTransactions();
         setTrxs(transactions);
       } catch (error) {
         showBoundary(error);
       }
     }
-    loadTransactions();
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -56,11 +99,11 @@ export default function Dashboard({ navigation }: StackScreenProps<ParamList>) {
   return (
     <SafeAreaView style={styles.scrollView}>
       <View style={styles.cardSection}>
-        <TouchableOpacity onPress={() => console.log('show/hide')}>
+        <TouchableOpacity onPress={cardPressHandler}>
           <BankCard
-            cardNumber="1234-5678-9876-0987"
-            cardExp="03/26"
-            cardCvv="879"
+            cardNumber={cardDetails().number}
+            cardExp={cardDetails().expiry}
+            cardCvv={cardDetails().cvv}
           />
         </TouchableOpacity>
       </View>

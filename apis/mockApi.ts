@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { TransactionDetails } from '../models/Transaction';
-import { generateTransaction } from './helper';
-import { useNavigation } from '@react-navigation/native';
+import { generateCard, generateTransaction } from './helper';
+import { CreditCard, DebitCard } from '../models/BankCard';
 
 export function authenticate(data: {
   email: string;
@@ -13,6 +13,12 @@ export function authenticate(data: {
     }
 
     return rej({ message: 'Incorrect password.' });
+  });
+}
+
+export function getCad(): Promise<CreditCard | DebitCard> {
+  return new Promise((res, rej) => {
+    return res(generateCard());
   });
 }
 
