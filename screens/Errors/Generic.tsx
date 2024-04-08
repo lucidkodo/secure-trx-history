@@ -5,7 +5,7 @@ import globalStyles from '../styles/global';
 
 export default function Generic({ error, resetErrorBoundary }: FallbackProps) {
   return (
-    <View style={globalStyles.container}>
+    <View>
       <Text>Error: "{error}"</Text>
       <Button
         title="Reset"

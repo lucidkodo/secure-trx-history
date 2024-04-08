@@ -2,8 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // screen components
-import Login from '../screens/Login';
-import Dashboard from '../screens/Dashboard';
+import Login from '../screens/Login/Login';
+import Dashboard from '../screens/Dashboard/Dashboard';
 import TransactionDetails from '../screens/TransactionDetails';
 
 const screens = [
@@ -28,7 +28,14 @@ export default function MainStack() {
     <NavigationContainer>
       <Stack.Navigator>
         {screens.map((s) => (
-          <Stack.Screen name={s.name} component={s.component} key={s.name} />
+          <Stack.Screen
+            name={s.name}
+            component={s.component}
+            key={s.name}
+            options={{
+              header: () => null,
+            }}
+          />
         ))}
       </Stack.Navigator>
     </NavigationContainer>

@@ -2,17 +2,12 @@ import 'react-native-gesture-handler';
 import React, { ErrorInfo } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, createTheme } from '@rneui/themed';
 
 import MainStack from './navigation/MainStack';
 import Generic from './screens/Errors/Generic';
-import globalStyles, {
-  buttonTitle,
-  primaryBtn,
-  secondaryBtn,
-} from './screens/styles/global';
+import { buttonTitle, primaryBtn, secondaryBtn } from './screens/styles/global';
 
 const theme = createTheme({
   components: {

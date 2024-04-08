@@ -53,20 +53,3 @@ export function generateTransaction(): TransactionDetails {
     approvalCode: String(faker.finance.accountNumber({ length: 6 })),
   } satisfies TransactionDetails;
 }
-
-export function concealCardNumber(cardNumber: string) {
-  // const chunkSize = 4;
-  // const numbers = cardNumber.split('');
-  // const chunked: string[] = [];
-  // for (let i = 0; i < numbers.length; i += chunkSize) {
-  //   chunked.push(numbers.slice(i, i + chunkSize).join(''));
-  // }
-  // console.log(chunked);
-  // return chunked.join('');
-}
-
-export function errorPromise() {
-  return new Promise((res, rej) => {
-    return rej('no');
-  });
-}
