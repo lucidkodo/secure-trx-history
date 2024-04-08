@@ -36,7 +36,7 @@ const globalStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.lightGreen,
     alignItems: 'center',
     justifyContent: 'center',
   },

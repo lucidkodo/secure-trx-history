@@ -10,7 +10,7 @@ export function authenticate(data: {
       return res(true);
     }
 
-    return rej('Incorrect password.');
+    return rej({ message: 'Incorrect password.' });
   });
 }
 
