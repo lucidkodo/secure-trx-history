@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { getNewTransactions } from '../../../apis/mockApi';
+import { useState, useCallback } from 'react';
+import { getNewTransactions } from '../../../services/api';
 import { TransactionDetails } from '../../../models/Transaction';
 import { useErrorBoundary } from 'react-error-boundary';
 

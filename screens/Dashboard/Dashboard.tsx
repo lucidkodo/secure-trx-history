@@ -10,7 +10,7 @@ import {
 import { Text, Icon } from '@rneui/themed';
 import dayjs from 'dayjs';
 import { colors } from '../styles/global';
-import { getTransactions } from '../../apis/mockApi';
+import { getTransactions } from '../../services/api';
 import TransactionItem from './components/TransactionItem';
 import useRefresh from './hooks/useRefresh';
 import { TransactionDetails } from '../../models/Transaction';
@@ -18,7 +18,7 @@ import { useErrorBoundary } from 'react-error-boundary';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ParamList } from '../../navigation/types';
 import { CreditCard, DebitCard } from '../../models/BankCard';
-import { generateCard } from '../../apis/helper';
+import { generateCard } from '../../services/helper';
 import { useAtom } from 'jotai';
 import { isAuthenticated } from '../../stores/user';
 import * as LocalAuth from 'expo-local-authentication';
@@ -108,16 +108,7 @@ export default function Dashboard({ navigation }: StackScreenProps<ParamList>) {
         </TouchableOpacity>
       </View>
       <View style={{ backgroundColor: colors.darkGreen }}>
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 18,
-            color: colors.grey1,
-            paddingVertical: 10,
-          }}
-        >
-          Transactions
-        </Text>
+        <Text style={styles.banner}>Transactions</Text>
       </View>
       <ScrollView
         refreshControl={
@@ -135,20 +126,7 @@ export default function Dashboard({ navigation }: StackScreenProps<ParamList>) {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity
-        style={{
-          position: 'absolute',
-          backgroundColor: colors.primaryYellow,
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 60,
-          height: 60,
-          bottom: 30,
-          right: 30,
-          borderRadius: 100,
-        }}
-        onPress={logout}
-      >
+      <TouchableOpacity style={styles.floatingBtn} onPress={logout}>
         <Icon name="logout" color={colors.darkGreen} />
       </TouchableOpacity>
     </SafeAreaView>
@@ -161,4 +139,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardSection: { alignItems: 'center', marginBottom: 20 },
+  banner: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: colors.grey1,
+    paddingVertical: 10,
+  },
+  floatingBtn: {
+    position: 'absolute',
+    backgroundColor: colors.primaryYellow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
+    bottom: 30,
+    right: 30,
+    borderRadius: 100,
+  },
 });

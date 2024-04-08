@@ -6,7 +6,7 @@ import { colors } from '../styles/global';
 import { Input, Button } from '@rneui/themed';
 import { ParamList } from '../../navigation/types';
 
-import * as api from '../../apis/mockApi';
+import * as api from '../../services/api';
 import * as LocalAuth from 'expo-local-authentication';
 
 // state management

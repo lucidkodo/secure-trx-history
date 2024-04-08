@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 // screen components
 import Login from '../screens/Login/Login';
 import Dashboard from '../screens/Dashboard/Dashboard';
-import TransactionDetails from '../screens/TransactionDetails';
+import TransactionDetails from '../screens/Transaction/TransactionDetails';
 
 const Stack = createStackNavigator();
 

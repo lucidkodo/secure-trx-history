@@ -1,8 +1,9 @@
 import { View, StyleSheet } from 'react-native';
 import { Text } from '@rneui/themed';
 import { StackScreenProps } from '@react-navigation/stack';
-import { ParamList } from '../navigation/types';
-import { colors } from './styles/global';
+import { ParamList } from '../../navigation/types';
+import { colors } from '../styles/global';
+import { TransactionType } from '../../models/Transaction';
 import dayjs from 'dayjs';
 
 export default function TransactionDetails({
@@ -13,16 +14,19 @@ export default function TransactionDetails({
 
   return (
     <View style={styles.container}>
-      <View style={{}}>
+      <View>
         <Text
           h3
           style={{
             textAlign: 'right',
             fontWeight: 'bold',
-            color: data.type === 'CREDIT' ? colors.negative : colors.positive,
+            color:
+              data.type === TransactionType.credit
+                ? colors.negative
+                : colors.positive,
           }}
         >
-          {data.type === 'CREDIT' ? '-' : '+'}
+          {data.type === TransactionType.credit ? '-' : '+'}
           {data.amount}
         </Text>
         <View style={{ marginTop: 10 }}>
