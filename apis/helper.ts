@@ -39,17 +39,18 @@ export function generateCard(type?: CardType): CreditCard | DebitCard {
 
 export function generateTransaction(): TransactionDetails {
   const trxType = faker.number.int({
-    min: 0.01,
+    min: 0,
     max: Object.values(TransactionType).length - 1,
   });
 
   return {
     id: faker.git.commitSha({ length: 10 }),
     amount: faker.number.float({ fractionDigits: 2, min: 0, max: 1000 }),
-    date: faker.date.recent({ days: 10 }),
+    date: `${faker.date.recent({ days: 10 })}`,
     type: Object.values(TransactionType)[trxType],
     description: faker.commerce.productName(),
     referenceNum: 'ref-' + faker.finance.accountNumber({ length: 5 }),
     approvalCode: String(faker.finance.accountNumber({ length: 6 })),
+    details: faker.lorem.sentence(),
   } satisfies TransactionDetails;
 }

@@ -6,7 +6,7 @@ export enum TransactionType {
 export interface TransactionBase {
   amount: number; // float
   description: string;
-  date: Date;
+  date: string;
   type: TransactionType;
 }
 
@@ -14,4 +14,5 @@ export interface TransactionDetails extends TransactionBase {
   id: string;
   referenceNum: string;
   approvalCode: string;
+  details: string;
 }

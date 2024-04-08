@@ -4,9 +4,14 @@ import { StyleSheet, StyleProp, TextStyle } from 'react-native';
 const colors = {
   darkGreen: '#004643',
   lightGreen: '#abd1c6',
+  lightGreen2: '#d6f7ed',
   primaryYellow: '#f9bc60',
   stroke: '#001e1d',
   grey1: '#ccc',
+  grey2: '#fefefe',
+  grey3: '#fefefe',
+  negative: '#dc5252',
+  positive: '#06911b',
 };
 
 const primaryBtn = {

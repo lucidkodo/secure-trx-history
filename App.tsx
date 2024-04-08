@@ -9,6 +9,10 @@ import MainStack from './navigation/MainStack';
 import Generic from './screens/Errors/Generic';
 import { buttonTitle, primaryBtn, secondaryBtn } from './screens/styles/global';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+
 const theme = createTheme({
   components: {
     Button: (props) => {
