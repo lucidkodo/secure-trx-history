@@ -1,32 +1,25 @@
-import { useEffect, useState, ComponentProps, createRef } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 import { useErrorBoundary } from 'react-error-boundary';
 import { colors } from '../styles/global';
 import { Input, Button } from '@rneui/themed';
-import { CompositeNavigationProp } from '@react-navigation/native';
+import { ParamList } from '../../navigation/types';
 
-import { generateCard, generateTransaction } from '../../apis/helper';
 import * as api from '../../apis/mockApi';
+import * as LocalAuth from 'expo-local-authentication';
 
 // state management
 import { useAtom } from 'jotai';
 import { username, userEmail } from '../../stores/user';
 
-type LoginProps = ComponentProps<any> &
-  CompositeNavigationProp<any, any> & {
-    message: string;
-  };
-
-export default function Login({ navigation }: LoginProps) {
+export default function Login({ navigation }: StackScreenProps<ParamList>) {
   const { showBoundary } = useErrorBoundary();
-  const [password, setPassword] = useState<string>('');
   const [name, setName] = useAtom(username);
   const [email, setEmail] = useAtom(userEmail);
-  const [loginError, setLoginError] = useState<string>('');
 
-  const pressHandler = () => {
-    console.log('bio');
-  };
+  const [password, setPassword] = useState<string>('');
+  const [loginError, setLoginError] = useState<string>('');
 
   const onPasswordChange = (value: string) => {
     if (loginError) {
@@ -39,7 +32,26 @@ export default function Login({ navigation }: LoginProps) {
   const passwordLoginHandler = async () => {
     try {
       await api.authenticate({ email, password });
-      navigation.push('Dashboard');
+      navigation.navigate('Dashboard');
+    } catch (error: unknown) {
+      if ((error as Error).message as string) {
+        setLoginError((error as Error).message);
+      } else {
+        showBoundary(error);
+      }
+    }
+  };
+
+  const biometricsLoginHandler = async () => {
+    try {
+      const result = await LocalAuth.authenticateAsync();
+      // console.log(result);
+      if (result.success) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Dashboard' }],
+        });
+      }
     } catch (error: unknown) {
       if ((error as Error).message as string) {
         setLoginError((error as Error).message);
@@ -77,7 +89,7 @@ export default function Login({ navigation }: LoginProps) {
         <Button
           title="Login with biometrics"
           buttonStyle={{ marginTop: 10 }}
-          onPress={pressHandler}
+          onPress={biometricsLoginHandler}
         />
       </View>
     </View>
